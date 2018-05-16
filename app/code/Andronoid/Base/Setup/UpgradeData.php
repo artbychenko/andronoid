@@ -9,6 +9,7 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Cms\Model\Block;
 use Magento\Cms\Model\BlockFactory;
 use Magento\Cms\Api\PageRepositoryInterface;
@@ -23,6 +24,12 @@ use Magento\Cms\Api\Data\PageInterface;
 
 class UpgradeData implements UpgradeDataInterface
 {
+
+    /**
+     * Cms home page identifier
+     */
+    const CMS_PAGE_THEME1_HOME = 'theme1_home';
+
     /**
      * Magento Store manager
      *
@@ -74,6 +81,7 @@ class UpgradeData implements UpgradeDataInterface
      * @param PageInterface $pageInterface
      * @param BlockFactory $blockFactory
      */
+
     public function __construct(
         StoreManagerInterface $storeManager,
         PageInterfaceFactory $pageFactory,
@@ -102,7 +110,8 @@ class UpgradeData implements UpgradeDataInterface
         $this->installer = $setup;
         $this->context = $context;
 
-        //$this->upgradeToVersion('0.0.2');
+        $this->upgradeToVersion('0.0.2');
+        $this->upgradeToVersion('0.0.3');
 
     }
 
@@ -117,5 +126,75 @@ class UpgradeData implements UpgradeDataInterface
             $methodName = 'upgradeTo_' . str_replace('.', '', $versionNumber);
             $this->$methodName();
         }
+    }
+
+    /**
+     *
+     * creates and configures home page
+     */
+    protected function upgradeTo_002()
+    {
+        $this->installer->startSetup();
+
+        /** @var \Magento\Cms\Model\Page $cmsPage */
+        $cmsPage = $this->pageFactory->create();
+        $cmsPage->getResource()->load($cmsPage, static::CMS_PAGE_THEME1_HOME, 'identifier');
+
+        if ($cmsPage->getId()) {
+            // CMS page already exist
+            return;
+        }
+
+        $store = $this->storeManager->getStore(AndronoidBaseInstallData::STORE_VIEW_CODE);
+        $storeViewId = $store->getId();
+
+        $cmsPage->setData([
+            'stores' => [$storeViewId],
+            'title' => 'Theme1 Home',
+            'identifier' => static::CMS_PAGE_THEME1_HOME,
+            'content' => '',
+            'is_active' => Block::STATUS_ENABLED,
+            'page_layout' => '1column',
+        ]);
+
+        $cmsPage->getResource()->save($cmsPage);
+
+        $this->config->saveConfig(
+            'web/default/cms_home_page',
+            static::CMS_PAGE_THEME1_HOME,
+            ScopeInterface::SCOPE_STORES,
+            $storeViewId
+        );
+
+        $this->installer->endSetup();
+    }
+
+    /**
+     *
+     * adds content to home page
+     */
+    protected function upgradeTo_003()
+    {
+        $cmsPageContent = <<<HTML
+        <section class="top-section">top section</section>
+        <section class="main-section">main section</section>
+        <section class="bottom-section">bottom section</section>
+HTML;
+
+        $this->installer->startSetup();
+
+        /** @var \Magento\Cms\Model\Page $cmsPage */
+        $cmsPage = $this->pageFactory->create();
+        $cmsPage->getResource()->load($cmsPage, static::CMS_PAGE_THEME1_HOME, 'identifier');
+
+        if (!$cmsPage->getId()) {
+            // CMS page not exists
+            return;
+        }
+
+        $cmsPage->setContent($cmsPageContent);
+        $cmsPage->getResource()->save($cmsPage);
+
+        $this->installer->endSetup();
     }
 }
