@@ -60,5 +60,15 @@ module.exports = {
             'css/styles'
         ],
         dsl: 'less'
+    },
+    'backend-theme1': {
+        area: 'adminhtml',
+        name: 'Andronoid/theme1',
+        locale: 'en_US',
+        files: [
+            'css/styles-old',
+            'css/styles'
+        ],
+        dsl: 'less'
     }
 };
