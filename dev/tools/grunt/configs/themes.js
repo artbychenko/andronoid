@@ -41,9 +41,29 @@ module.exports = {
         ],
         dsl: 'less'
     },
+    theme1: {
+        area: 'frontend',
+        name: 'Andronoid/theme1',
+        locale: 'en_US',
+        files: [
+            'css/styles-m',
+            'css/styles-l'
+        ],
+        dsl: 'less'
+    },
     backend: {
         area: 'adminhtml',
         name: 'Magento/backend',
+        locale: 'en_US',
+        files: [
+            'css/styles-old',
+            'css/styles'
+        ],
+        dsl: 'less'
+    },
+    'backend-theme1': {
+        area: 'adminhtml',
+        name: 'Andronoid/theme1',
         locale: 'en_US',
         files: [
             'css/styles-old',
