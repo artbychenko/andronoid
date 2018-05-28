@@ -57,7 +57,7 @@ class Router implements \Magento\Framework\App\RouterInterface
             /*
              * We must set module, controller path and action name for our controller class(Controller/Test/Test.php)
              */
-            $request->setModuleName('inchootest')->setControllerName('test')->setActionName('test');
+            $request->setModuleName('education')->setControllerName('index')->setActionName('index');
         } else {
             //There is no match
             return;

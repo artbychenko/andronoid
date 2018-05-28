@@ -1,0 +1,29 @@
+{
+    "name": "andronoid/module-education",
+    "description": "N/A",
+    "require": {
+        "php": "*",
+        "magento/product-community-edition": "2.2.4",
+        "composer/composer": "@alpha",
+        "magento/magento-composer-installer": "*"
+    },
+    "type": "magento2-module",
+    "version": "0.0.1",
+    "license": [
+        "proprietary"
+    ],
+    "extra": {
+        "map": [
+            [
+                "*",
+                "Andronoid/Education"
+            ]
+        ]
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ]
+}

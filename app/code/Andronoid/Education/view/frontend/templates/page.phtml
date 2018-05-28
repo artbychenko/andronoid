@@ -1,0 +1,7 @@
+<h1><?php echo __('This is an education module 2!') ?></h1>
+<p><?php echo $block->getArt(); ?></p>
+<ul>
+    <?php foreach ($block->getNewProducts() as $product): ?>
+        <li><?php echo $product->getName(); ?></li>
+    <?php endforeach; ?>
+</ul>
