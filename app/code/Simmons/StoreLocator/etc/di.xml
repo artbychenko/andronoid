@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="simmons_storelocator_import" xsi:type="object">
+                    Simmons\StoreLocator\Console\Command\ImportStoresCommand
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Netbaseteam\Locator\Controller\Search\Index"
+                type="Simmons\StoreLocator\Controller\Search\Index" />
+    <preference for="Netbaseteam\Locator\Block\Adminhtml\Locator\Edit\Tab\Main"
+                type="Simmons\StoreLocator\Block\Adminhtml\Locator\Edit\Tab\Main" />
+    <preference for="Netbaseteam\Locator\Model\ResourceModel\Locator"
+                type="Simmons\StoreLocator\Model\ResourceModel\Locator" />
+    <preference for="Netbaseteam\Locator\Block\Locator\Storelist"
+                type="Simmons\StoreLocator\Block\Locator\Storelist" />
+</config>

@@ -1,0 +1,436 @@
+//
+//  styling Find a Store on home page
+//
+.html {
+    font-size: 16px;
+}
+
+.find-store-wrapper {
+    background: @find-store__background-color;
+    padding: 50px 0;
+
+    .find-store-fields {
+        max-width: 70%;
+        margin: auto;
+
+        .find-store-title {
+            text-align: center;
+
+            strong {
+                color: @find-store-title__text-color;
+                display: block;
+                font-size: 48px;
+                line-height: 58px;
+                margin-bottom: 15px;
+                text-transform: uppercase;
+                letter-spacing: 4px;
+                font-weight: 300;
+            }
+
+            em {
+                color: @find-store-title__text-color;
+                display: block;
+                font-style: normal;
+                margin-bottom: 24px;
+                font-size: 18px;
+                font-weight: 300;
+                letter-spacing: 1.5px;
+                line-height: 22px;
+            }
+        }
+
+        .find-store-form {
+            margin-bottom: 51px;
+            display: flex;
+            justify-content: center;
+
+            .find-store-filters {
+                display: inline-flex;
+                justify-content: space-around;
+                flex-direction: row;
+                width: 80%;
+                margin-right: 50px;
+
+                .find-store-filter {
+                    flex: 1;
+                    margin: 0 7px;
+
+                    .filter {
+                        select {
+                            background-image: url(../images/select-arrow-find-a-store.png);
+                            background-position: calc(100% - 10px) 50%;
+                            background-repeat: no-repeat;
+                            padding-right: 35px;
+                        }
+
+                        input, select {
+                            color: @color-black;
+                            font-family: @font-family__Apercu-Bold;
+                            font-weight: 500;
+                            font-size: 17px;
+                            letter-spacing: 1px;
+                        }
+                    }
+                }
+            }
+
+            .find-store-submit-wrapper {
+                text-align: center;
+                display: inline-flex;
+                flex-direction: column;
+
+                .find-store-submit {
+                    font-family: @font-family__Apercu-Bold;
+                    font-weight: 500;
+                    margin: 0 0 5px 0;
+                    padding: 1rem 3rem;
+                    border-radius: 4px;
+                    border: 1px solid @find-store-submit__border-color;
+                    color: @find-store-submit__text-color;
+                    background-color: @find-store-submit__background-color;
+                    width: 250px;
+                    text-align: center;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    line-height: 1;
+                    font-size: 18px;
+                    height: 49px;
+                    transition: all .75s ease 0s;
+                    letter-spacing: 2px;
+
+                    &:hover {
+                        border-color: @find-store-submit__border-color-active;
+                        color: @find-store-submit__text-color-active;
+                        background-color: @find-store-submit__background-color-active;
+                    }
+                }
+
+                span {
+                    font-size: 18px;
+                    font-weight: 500;
+                    line-height: 23px;
+                    font-family: @font-family__Apercu-Light;
+                    color: @color-white;
+                    letter-spacing: 2px;
+                }
+            }
+        }
+
+        .find-store-text {
+            text-align: center;
+
+            p {
+                font-family: @font-family__Apercu-Light;
+                font-size: 16px;
+                font-weight: 500;
+                letter-spacing: 1.78px;
+                line-height: 19px;
+                text-align: center;
+                margin-bottom: 1rem;
+                color: @color-white;
+            }
+
+            .authorized-link {
+                color: #fff;
+                text-decoration: underline;
+
+                &:hover {
+                    color: #fff;
+                }
+            }
+
+            .unauthorized-link {
+                font-family: @font-family__Apercu-Light;
+                padding: 1rem;
+                background-color: @color-black;
+                border: 0.5px solid @color-white;
+                color: @color-white;
+                display: block;
+                text-transform: uppercase;
+                max-width: fit-content;
+                margin: 0 auto;
+                font-size: 14px;
+                letter-spacing: 2px;
+                line-height: 17px;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+//
+//  styling Find a Store on locator page
+//
+
+.localtor-wrapper {
+    .find-store-wrapper {
+        .find-store-fields {
+            align-items: center;
+            display: flex;
+            height: 90vh;
+            flex-direction: column;
+            justify-content: center;
+
+            .find-store-title {
+                width: 100%;
+
+                strong {
+                    font-size: 3rem;
+                    margin-bottom: 0;
+                    line-height: 47px;
+                    text-transform: none;
+                }
+                em  {
+                    font-size: 1rem;
+                }
+            }
+
+            .find-store-form {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                width: 100%;
+                align-items: center;
+                margin-bottom: 12rem;
+
+                .find-store-filters {
+                    display: inline-flex;
+                    justify-content: space-around;
+                    flex-direction: row;
+                    margin: 0;
+                    margin-bottom: 15px;
+                    width: 80%;
+                }
+
+                .find-store-submit-wrapper {
+                    flex-direction: column;
+                    align-items: center;
+                    height: 49px;
+                    margin: 0px auto 1rem;
+
+                    .find-store-submit {
+                        border-radius: 4rem;
+                        transition: all .75s ease 0s;
+                        font-size: 13px;
+                        line-height: 0.25;
+                        padding: 1.25rem 2rem;
+                        color: #fff;
+                        background-color: #000;
+                        border: 1px solid #fff;
+
+                        &:hover {
+                            border-color: #000;
+                            background-color: #fff;
+                            color: #000;
+                        }
+                    }
+
+                    span {
+                        margin-left: 5px;
+                    }
+                }
+            }
+
+            .find-store-text {
+                max-width: 60%;
+                margin: 0 auto;
+
+                p {
+                    font-size: .7rem;
+                }
+
+                a {
+                    padding: 3px;
+                    font-size: .75rem;
+                }
+            }
+        }
+    }
+
+    .list-store {
+        display: none;
+
+        .go-back {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #EBEBEB;
+            background: #fff;
+            top: 0;
+            position: sticky;
+
+            .go-back-button {
+                color: #000;
+                background-color: #fff;
+                border: 1px solid #000;
+                transition: all .75s ease 0s;
+                font-size: 13px;
+                padding: 14px 25px 14px;
+
+                &:hover {
+                    border-color: #fff;
+                    background-color: #000;
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    &.show-map {
+        .find-store-wrapper {
+            .find-store-fields {
+                height: auto;
+                display: flex;
+                flex-wrap: wrap;
+                max-width: 95%;
+                flex-direction: row;
+
+                .find-store-title {
+                    width: auto;
+
+                    strong {
+                        font-size: 2rem;
+                    }
+                }
+
+                .find-store-form {
+                    width: 80%;
+                    margin-left: auto;
+                    flex-direction: row;
+                    margin-bottom: 1rem;
+
+                    .find-store-filters {
+                        display: inline-flex;
+                        justify-content: space-around;
+                        flex-direction: row;
+                        margin: 0;
+                        margin-bottom: 15px;
+
+                        .find-store-filter {
+                            flex: 1;
+                            margin: 0 7px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile max 767 on HP
+//  _
+
+
+@media only screen and (max-width: 767px) {
+    .cms-home,
+    .localtor-wrapper,
+    .localtor-wrapper.show-map {
+        .find-store-wrapper {
+            .find-store-fields {
+                height: auto;
+                max-width: 80%;
+                justify-content: center;
+
+                .find-store-title {
+                    text-align: center;
+
+                    strong {
+                        font-size: 34px;
+                        line-height: 48px;
+                    }
+                }
+
+                .find-store-form {
+                    flex-direction: column;
+                    margin-left: 0;
+                    width: 100%;
+                    margin-bottom: 1rem;
+
+                    .find-store-filters {
+                        flex-direction: column;
+                        width: 100%;
+                        margin: 0;
+
+                        .find-store-filter {
+                            margin: 0 0 10px 0;
+                        }
+                    }
+
+                    .find-store-submit-wrapper {
+                        text-align: center;
+                        display: inline-flex;
+                        flex-direction: column;
+                        height: auto;
+
+                        .find-store-submit {
+                            width: auto;
+                        }
+                    }
+                }
+
+                .find-store-text {
+                    max-width: 90%;
+                    margin: 0 auto;
+                }
+            }
+        }
+    }
+}
+
+//
+// 1440-1850 on HP
+// __
+
+@media only screen and (max-width: 1850px) and (min-width: 1440px) {
+    .cms-home,
+    .localtor-wrapper.show-map {
+        .find-store-wrapper {
+            .find-store-fields {
+                max-width: 90%;
+            }
+        }
+    }
+
+    .localtor-wrapper {
+        .find-store-wrapper {
+            .find-store-fields {
+                .find-store-form {
+                    align-items: center;
+
+                    .find-store-submit-wrapper {
+                        height: auto;
+                        flex-direction: column;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+
+        &.show-map {
+            .find-store-wrapper {
+                .find-store-fields {
+                    .find-store-form {
+                        align-items: flex-start;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+// > 1440 on Locator page
+// __
+
+@media only screen and (min-width: 1440px) {
+    .localtor-wrapper {
+        .find-store-wrapper {
+            .find-store-fields {
+                max-width: 80%;
+            }
+        }
+    }
+}

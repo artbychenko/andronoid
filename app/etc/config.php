@@ -144,7 +144,9 @@ return [
     'Dotdigitalgroup_Email' => 1,
     'Magento_WishlistAnalytics' => 1,
     'Magento_WishlistSampleData' => 1,
+    'Netbaseteam_Locator' => 1,
     'Shopial_Facebook' => 1,
+    'Simmons_StoreLocator' => 1,
     'Temando_Shipping' => 1,
     'Vertex_Tax' => 1
   ]

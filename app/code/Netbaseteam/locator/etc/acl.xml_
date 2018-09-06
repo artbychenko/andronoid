@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Netbaseteam_Adminhtml::admin">
+                <resource id="Netbaseteam_Locator::locator" title="Locator" sortOrder="40">
+                    <resource id="Netbaseteam_Locator::manage" title="Locator Module" sortOrder="10">
+						<resource id="Netbaseteam_Locator::save" title="Save Locator" sortOrder="10" />
+                        <resource id="Netbaseteam_Locator::news_delete" title="Delete Locator" sortOrder="20" />
+					</resource>
+                </resource>
+                <resource id="Netbaseteam_Adminhtml::stores">
+                    <resource id="Netbaseteam_Adminhtml::stores_settings">
+                        <resource id="Netbaseteam_Adminhtml::config">
+                            <resource id="Netbaseteam_Locator::config_locator" title="Locator Section" sortOrder="50" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

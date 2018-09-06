@@ -1,0 +1,311 @@
+#maincontent {
+    .page-title-wrapper {
+        display: none;
+    }
+
+    .localtor-wrapper {
+        .map-box-container {
+            padding: 0;
+            margin: 0;
+        }
+        .list-title {
+            display: none;
+        }
+        .list-store {
+            padding: 0;
+            background-color: @locator-store-list__background-color;
+            height: 606px;
+        }
+        .store-item {
+            box-shadow: none;
+            background-color: @locator-store-list__background-color;
+            cursor: default;
+            padding: 50px 0;
+            margin: 0;
+            border-bottom: 1px solid @locator-store-list__border-color;
+            color: @locator-store-list-primary__text-color;
+        }
+
+        &.show-map {
+            .boxes-content {
+                display: block;
+            }
+        }
+    }
+    .store-content {
+        .store-num {
+            text-align: center;
+
+            span {
+                display: inline-block;
+                background-color: @locator-store-list-number__background-color;
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                color: @locator-store-list-secondary__text-color;
+                border-radius: 20px;
+                border: 1px solid transparent;
+            }
+        }
+        .store-title {
+            text-align: center;
+            margin: 30px 0 10px 0;
+
+            strong {
+                display: block;
+                font: 20px @locator-store-list__font-family;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                font-weight: normal;
+            }
+            a {
+                display: block;
+                padding: 10px 0;
+                margin: 10px auto;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            span {
+                font: 16px @locator-store-list__font-family;
+                color: @locator-store-list-primary__text-color;
+            }
+
+        }
+        .store-image {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+    }
+    .store-info {
+        text-align: center;
+        margin: 0;
+
+        .store-info-data {
+            display:inline-block;
+
+            span {
+                font: 14px @locator-store-list__font-family;
+                color: @locator-store-list-primary__text-color;
+                line-height: 1.6;
+            }
+        }
+        .store-info-store-link {
+            margin: 8px auto;
+
+            a {
+                font: 12px @locator-store-list__font-family;
+                color: @locator-store-list-primary__text-color;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+    .store-info-action {
+        text-align: center;
+
+        .map-marker {
+            display: block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 2rem;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            color: #000;
+
+            &:before {
+                content: "\f041";
+                font-family: 'FontAwesome', serif;
+            }
+        }
+        .store-link {
+            color: #000;
+        }
+    }
+    .store-info-distance {
+        text-align: center;
+    }
+
+    .boxes-content {
+        display: none;
+
+        .map-box-container {
+            .googlemap {
+                [title="centerMarker"] {
+                    opacity: 1 !important;
+                    position: relative;
+
+                    &::before,
+                    &::after {
+                        border-radius: 100%;
+                        display: inline-block;
+                        text-indent: -9999px;
+                        top: 50%;
+                        left: 50%;
+                    }
+
+                    &::before {
+                        content: "You are here";
+                        width: 1rem;
+                        height: 1rem;
+                        border: .125rem solid #fff;
+                        background: #000;
+                        box-shadow: 0 0 0.625rem 0 #555;
+                        z-index: 1;
+                        margin-left: -8px;
+                        margin-top: -8px;
+                        position: absolute;
+                    }
+
+                    &::after {
+                        content: "Radar";
+                        background: #000;
+                        opacity: .5;
+                        width: 0;
+                        height: 0;
+                        padding: .5rem;
+                        position: absolute;
+                        margin-left: -8px;
+                        margin-top: -8px;
+                        z-index: -1;
+                        transform: scale(1);
+                        animation: beacon 2.5s ease-in-out 2s infinite;
+
+                        @-webkit-keyframes beacon {
+                            0% {-webkit-transform: scale(0.5, 0.5); opacity: 0.0;}
+                            50% {opacity: 0.5;}
+                            100% {-webkit-transform: scale(3, 3); opacity: 0.0;}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1850px) and (min-width: 1440px) {
+    #maincontent {
+        .localtor-wrapper {
+            .store-item {
+                padding: 0;
+            }
+        }
+        .store-content {
+            display: flex;
+            align-items: center;
+            padding: 35px;
+
+        .store-num {
+            margin: 0 2rem 0 0;
+        }
+        .store-title {
+            flex: 0 1 25%;
+        }
+        .store-image {
+            min-width: 130px;
+            flex: 2;
+        }
+        }
+        .store-info {
+            margin: 0;
+            flex: 0 1 30%;
+            text-align: left;
+
+            .store-info-data {
+                text-align: left;
+            }
+        }
+        .store-info-action {
+            flex: 1;
+            margin: 0;
+        }
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    #maincontent {
+        .boxes-content {
+            position: relative;
+            overflow: hidden;
+        }
+        .localtor-wrapper {
+            .list-store-box {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                overflow: auto;
+            }
+
+            .store-item {
+                padding: 0;
+            }
+        }
+
+        .store-content {
+            display: flex;
+            align-items: center;
+            padding: 35px;
+
+            .store-num {
+                margin: 0 2rem 0 0;
+            }
+            .store-title {
+                flex: 0 1 25%;
+            }
+            .store-image {
+                min-width: 100px;
+                flex: 2;
+            }
+        }
+        .store-info {
+            margin: 0;
+            flex: 0 1 30%;
+            text-align: left;
+
+            .store-info-data {
+                text-align: left;
+                padding: 0 1.5rem;
+            }
+        }
+        .store-info-action {
+            flex: 1;
+            margin: 0;
+        }
+    }
+}
+
+
+@media only screen and (min-width: 1300px) {
+    #maincontent {
+        .store-content {
+            .store-title {
+                text-align: left;
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 1299px) {
+    #maincontent  {
+        .localtor-wrapper {
+            .store-content {
+                flex-direction: column;
+
+                .store-num {
+                    margin: 0;
+                }
+
+                .store-info {
+                    .store-info-data {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}

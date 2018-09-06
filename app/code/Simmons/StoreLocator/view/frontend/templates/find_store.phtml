@@ -1,0 +1,184 @@
+<?php
+    $currentPage = $this->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+    $isLocatorPage = strpos($currentPage, 'locator') !== false;
+
+    $action = $isLocatorPage ? $block->getUrl('locator/search/index') : $block->getUrl('locator');
+
+    $locatorBlock = $block->getLayout()->createBlock('Netbaseteam\Locator\Block\Locator');
+
+    $helper = $this->helper('Netbaseteam\Locator\Helper\Data');
+    $postHelper = $this->helper('Simmons\StoreLocator\Helper\Data');
+
+    $post = $postHelper->getPost();
+    $zipCode = '';
+    $distance = '';
+    $productLine = '';
+
+    if ($post) {
+        $zipCode = $post['zip_code'];
+        $distance = $post['distance'];
+        $productLine = $post['product_line'];
+    }
+
+    $distanceOptions = $postHelper->getDistance();
+    $productLineOptions = $postHelper->getProductLine();
+
+    $markerIconPath = $block->getViewFileUrl('Simmons_StoreLocator::images/svg/location-marker-black.svg');
+?>
+<div class="find-store-wrapper" id="find-a-store">
+    <div class="find-store-fields">
+        <div class="find-store-title">
+            <strong><?php /* @escapeNotVerified */
+                echo __('Find a Store') ?></strong>
+            <em><?php /* @escapeNotVerified */
+                echo __('Fields marked * are required') ?></em>
+        </div>
+        <form id="find-store-form" class="find-store-form" method="post" action="<?php echo $action; ?>">
+            <div class="find-store-filters">
+                <div class="zip-city-filter find-store-filter">
+                    <div class="filter required">
+                        <input name="findStoreCity" type="text" id="FindStoreCity"
+                               placeholder="Enter Zip or City, State *" value="<?php echo $zipCode; ?>">
+                        <span id="FindStoreCityValidation" style="display:none;"></span>
+                    </div>
+                </div>
+                <div class="product-filter find-store-filter">
+                    <div class="filter">
+                        <select name="findStoreProducts">
+                            <?php foreach ($productLineOptions as $productLineKey => $productLineValue): ?>
+                                <?php
+                                    $selectedProduct = 0;
+
+                                    if ($productLine) {
+                                        $selectedProduct = $productLine;
+                                    }
+
+                                    $isSelected = $selectedProduct == $productLineKey ? 'selected' : '';
+                                ?>
+                                <option value="<?php echo $productLineKey; ?>" <?php echo $isSelected; ?>><?php echo $productLineValue; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="distance-filter find-store-filter">
+                    <div class="filter">
+                        <select name="findStoreDistance">
+                            <?php foreach ($distanceOptions as $distanceKey => $distanceValue): ?>
+                                <?php
+                                    $selectedDistance = 25;
+
+                                    if ($distance) {
+                                        $selectedDistance = $distance;
+                                    }
+
+                                    $isSelected = $selectedDistance == $distanceKey ? 'selected' : '';
+                                ?>
+                                <option value="<?php echo $distanceKey; ?>" <?php echo $isSelected; ?>><?php echo $distanceValue; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="find-store-submit-wrapper">
+                <input type="submit" name="find-store-submit" value="Search" id="find-store-submit"
+                       class="find-store-submit">
+                <span>
+                    Models may vary by location.
+                </span>
+            </div>
+        </form>
+        <div class="find-store-text">
+            <p>
+                <?php /* @escapeNotVerified */
+                echo __('Please beware of retailers who are NOT authorized to sell Beautyrest products. Beautyrest cannot guarantee the authenticity of products purchased from <a class="authorized-link" target="_blank" href="' . $block->getUrl('unauthorized-retailers') . '">unauthorized retailers</a> or marketplace resellers. In many cases these products may be customer returns or other “as is" products that are not covered by a Beautyrest warranty.') ?>
+            </p>
+            <a class="unauthorized-link" target="_blank" href="<?php echo $block->getUrl('authorized-national-online-retailers'); ?>">
+                <?php /* @escapeNotVerified */
+                echo __('View a list of authorized online retailers') ?>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    require(['jquery', 'Simmons_StoreLocator/js/view/store-locator-list', 'Simmons_StoreLocator/js/cmsmart_localtor', 'domReady!'], function($, storeList, updateMap) {
+        var config = {
+            "enableModule": "<?php echo $helper->getConfigEnabled(); ?>",
+            "latDefault": "<?php echo $helper->getLatibuteDefault(); ?>",
+            "lngDefault": "<?php echo $helper->getLongibuteDefault(); ?>",
+            "zoomLevelDefault": "<?php echo $helper->getZoomLevelDefault(); ?>",
+            "searchUrl": "<?php echo $locatorBlock->getActionForm(); ?>",
+            "distanceUnit": "<?php echo $helper->getDistanceUnit(); ?>",
+            "markerIcon": "<?php echo $helper->getMarkerIcon(); ?>",
+            "geoMapApiKey": "<?php echo $helper->getGeoMapApiKey(); ?>",
+            "markerIcon": "<?php echo $markerIconPath; ?>"
+        };
+
+        storeList().addMapConfig(config);
+
+        $('[name="findStoreDistance"]').on('change', function() {
+            if (!$('#FindStoreCity').val()) return;
+
+            $('#find-store-form').submit();
+        });
+
+        $('#find-store-form').on('submit', function(e) {
+            if (!$('.locator-index-index').length) return;
+
+            e.preventDefault();
+
+            function filterByDistance(list) {
+                list.sort(function (a, b) {
+                    return a['distance'] - b['distance'];
+                });
+            };
+
+            var action = '<?php echo $action; ?>';
+            var data = {
+                'zip_code': $('#FindStoreCity').val(),
+                'distance': $('[name="findStoreDistance"]').val(),
+                'product_line': $('[name="findStoreProducts"]').val()
+            };
+            $.post(action, data).done(function(response) {
+                if (!Array.isArray(response) || response.error) {
+                    try {
+                        throw new Error('AJAX request to locator/search/index responded with an error');
+                    } catch (e) {
+                        console.log(e.name + ': ' + e.message);
+                    }
+
+                    return;
+                };
+
+                var geocoder = new google.maps.Geocoder();
+
+                geocoder.geocode({address: data['zip_code']}, function(results, status) {
+                    if (status === 'OK') {
+                        var requestedLocation = results[0].geometry.location;
+
+                        $.each(response, function(key, item) {
+                            var EARTH_RADIUS_IN_MILES = 3951;
+
+                            var storeLocation = new google.maps.LatLng(item.latitude, item.longitude);
+                            var distance = google.maps.geometry.spherical.computeDistanceBetween(requestedLocation, storeLocation, EARTH_RADIUS_IN_MILES).toFixed(1);
+                            item.distance = distance;
+                        });
+
+                        $('.localtor-wrapper').addClass('show-map');
+                        storeList().filter('');
+                        filterByDistance(response);
+                        storeList().filterList(response);
+                        storeList().updateStoreList(response);
+                        updateMap(config, requestedLocation);
+                    } else {
+                        console.log('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            });
+        });
+
+        <?php if ($post): ?>
+            $('#find-store-form').submit();
+        <?php endif; ?>
+    });
+</script>

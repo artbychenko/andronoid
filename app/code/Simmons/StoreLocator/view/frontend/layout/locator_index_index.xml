@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Find a Store</title>
+    </head>
+    <body>
+        <referenceBlock name="localtor.lists" remove="true" />
+
+        <referenceContainer name="content">
+            <block class="Netbaseteam\Locator\Block\Locator" name="localtor.lists-beautyrest" template="Simmons_StoreLocator::localtor.phtml">
+                <block class="Netbaseteam\Locator\Block\Locator\Search" name="localtor.find-store" template="Simmons_StoreLocator::find_store.phtml" />
+                <block class="Simmons\StoreLocator\Block\Locator\Storelist" name="localtor.list.store" template="Simmons_StoreLocator::localtor/storelist.phtml" />
+                <block class="Netbaseteam\Locator\Block\Locator\Map" name="localtor.list.map" template="Simmons_StoreLocator::localtor/map.phtml" />
+            </block>
+        </referenceContainer>
+    </body>
+</page>

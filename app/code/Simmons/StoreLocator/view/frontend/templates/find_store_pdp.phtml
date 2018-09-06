@@ -1,0 +1,43 @@
+<?php
+$productId = $block->getProductId();
+?>
+<div id="FindStore" class="ProductFindaStore Relative">
+    <svg id="LocationFilled" viewBox="0 0 33.3 50" enable-background="new 0 0 33.3 50" width="100%" height="100%">
+        <path fill="currentColor"
+              d="M33.3,16.7c0,3-0.8,5.8-2.1,8.2L17.6,49.5C17.4,49.8,17,50,16.7,50c-0.4,0-0.8-0.2-0.9-0.5L2.1,24.8C0.8,22.5,0,19.6,0,16.7C0,7.5,7.5,0,16.7,0S33.3,7.5,33.3,16.7z M22.9,16.7c0-3.5-2.8-6.2-6.2-6.2s-6.2,2.8-6.2,6.2s2.8,6.2,6.2,6.2S22.9,20.1,22.9,16.7z"></path>
+    </svg>
+    <div class="Flex text-block">
+        <div class="FlexCell TabletPosition-2 PhonePosition-2 Cell-1 Square">
+            <div class="TextCenter">
+                <form action="<?= $block->getUrl('locator')?>" method="post">
+
+                    <h3><?= __('Find a store near you')?></h3>
+                    <div class="Relative">
+                        <input name="findStoreCity" type="text"
+                               id="FindStoreCity"
+                               class="CityName"
+                               placeholder="<?= __('Enter Location') ?>">
+                        <?php if($productId): ?>
+                            <input name="findStoreProducts" type="hidden"
+                                   value="<?= $productId?>">
+                        <?php endif; ?>
+                        <input name="findStoreDistance" type="hidden"
+                               value="25">
+                    </div>
+                    <button class="btn btn-black">Go</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="FlexCell PhonePosition-1 TabletPosition-1 Cell-2 PaddingLeftRight Center">
+            <div class="TextCenter">
+                <div class="Flex Gutters">
+                    <h4 id="ctl00_ctl00_MainHolder_MainContent_FindStoreDetail_NoLocationText">
+                        <?= __('Enter your location to find a store.')?>
+                    </h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,165 @@
+<?php
+
+/** @var \Netbaseteam\Locator\Block\Locator\Storelist $block */
+
+$helper = $this->helper('Netbaseteam\Locator\Helper\Data');
+
+/*
+ *  temporary data
+ */
+$base_url = $this->helper('Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl();
+$store_image_url = $base_url.'wysiwyg/temporary/Beautyrest_Diamond_Dealer.png';
+?>
+<?php if ($block->hasStore()): ?>
+    <div class="list-store-box col-lg-6 col-md-12 pull-right" data-bind="scope: 'storeLocatorList'">
+        <!-- ko if: storeList().length -->
+            <div class="list-title">
+                <h2>
+                    <span><?php echo __('Store List'); ?></span>
+                    <span class="number-store pull-right"><span data-bind="text: storeList().length"></span> <?php echo __('Stores'); ?></span>
+                </h2>
+            </div>
+        <!-- /ko -->
+
+        <div data-bind="style: { display: storeList().length ? 'block' : 'none' }" class="list-store col-xs-12">
+            <!-- ko if: filter() -->
+                <div class="go-back">
+                    <button class="go-back-button" data-bind="click: function() {updateMap(); changeFilter('')}"><?php echo __('Go back to full list'); ?></button>
+                </div>
+            <!-- /ko -->
+            <ul class="list-store-container disable-ul" data-bind="foreach: filter() ? filteredStores()[filter()] : closestStores, afterRender: updateMap">
+                <li class="show-tag-li store-item" data-bind="attr: {
+                    'item-number': $index(),
+                    'title': store_name,
+                    'data-position': $parent.toPositionJson($data),
+                    'data-info': $parent.toStoreJsonData($data),
+                    'data-zoom': $parent.toZoonLevelJsonData($data)
+                }">
+                    <div class="store-content">
+                        <div class="store-num">
+                            <span data-bind="text: $index() + 1"></span>
+                        </div>
+                        <div class="store-title">
+                            <strong data-bind="text: store_name"></strong>
+
+                            <!-- ko if: $parent.filteredStores()[store_name] && $parent.filteredStores()[store_name].length > 1 && !$parent.filter() -->
+                                    <a href="#" data-bind="click: function() {$parent.updateMap(); $parent.changeFilter(store_name)}">
+                                        <!-- ko if: $parent.filteredStores()[store_name].length === 2 -->
+                                            <span><?php echo __('View 1 other location'); ?></span>
+                                        <!-- /ko -->
+
+                                        <!-- ko if: $parent.filteredStores()[store_name].length > 2 -->
+                                            <span><?php echo __('View '); ?>
+                                                <span data-bind="text: $parent.filteredStores()[store_name].length - 1"></span>
+                                                <?php echo __(' other locations'); ?>
+                                            </span>
+                                        <!-- /ko -->
+                                    </a>
+                            <!-- /ko -->
+                        </div>
+                        <div class="store-image">
+
+                            <!-- ko if: store_rank == 9 -->
+                                <img data-bind="attr: { src: '<?php echo $store_image_url ?>' }" />
+                            <!-- /ko -->
+
+                        </div>
+                        <div class="store-info">
+                            <div class="store-info-data">
+                                <!-- ko if: address -->
+                                    <p class="store-info-address-secondary"><span data-bind="text: address"></span></p>
+                                <!-- /ko -->
+                                <p class="store-info-address-primary">
+                                    <!-- ko if: city -->
+                                        <span class="store-info-city" data-bind="text: city + (state || zip_code ? ',' : '')"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: state -->
+                                        <span data-bind="text: state" class='store-info-state'></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: zip_code -->
+                                        <span data-bind="text: zip_code" class='store-info-zip'></span>
+                                    <!-- /ko -->
+                                </p>
+                                <!-- ko if: phone_number -->
+                                    <p><span data-bind="text: phone_number"></span></p>
+                                <!-- /ko -->
+
+                                <!-- ko if: store_link -->
+                                    <p class="store-info-store-link">
+                                        <a data-bind="attr: { href: '//' + store_link, title: store_link }" class="store-web" target="blank" ><?php echo __('Visit their site'); ?></a>
+                                    </p>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                        <div class="store-info-action-wrapper">
+                            <div class="store-info-action">
+                                <a data-bind="attr: {
+                                        href: $parent.urlToMaps(latitude,longitude),
+                                        title: 'Get direction ' + address
+                                        }"
+                                   target="_blank" rel="external">
+                                    <i class="map-marker"></i>
+                                    <span class="store-link"><?php echo __('Direction') ?></span>
+                                </a>
+                            </div>
+                            <div class="store-info-distance">
+                                <span data-bind="text: distance + ' mi'"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-direction custom-popup col-xs-12">
+                        <ul class="vertical text-center travel-list" data-bind="attr: { 'number-box': $index() }">
+                            <li class="travel car travel-active" travel-data="DRIVING" title="<?php echo __('Driving'); ?>">
+                                <i class="fa fa-car" aria-hidden="true"></i>
+                            </li>
+                            <li class="travel bus" travel-data="TRANSIT" title="<?php echo __('Transit'); ?>">
+                                <i class="fa fa-subway" aria-hidden="true"></i>
+                            </li>
+                            <li class="travel walk" travel-data="WALKING" title="<?php echo __('Walking'); ?>">
+                                <i class="fa fa-male" aria-hidden="true"></i>
+                            </li>
+                            <li class="travel bicycle" travel-data="BICYCLING" title="<?php echo __('Bicycle'); ?>">
+                                <i class="fa fa-bicycle"  aria-hidden="true"></i>
+                            </li>
+                        </ul>
+                        <div class="directions-box">
+                            <div class="widget-directions-searchbox-handle">
+                                <div class="widget-directions-icon waypoint-handle"></div>
+                                <div class="widget-directions-icon waypoint-to"></div>
+                                <div class="widget-directions-icon waypoint-bullet"></div>
+                            </div>
+                            <div class="form-inputs">
+                                <input class="form-control origin originA start" type="text" name="originA" isstart="true" autocomplete="off" placeholder="Enter a location" data-bind="attr: { id: 'director-' + $index() }">
+                                <input class="form-control origin originB end" readonly="true" type="text" name="originB" autocomplete="off" data-bind="attr: { value: address }">
+                            </div>
+                            <div class="widget-directions-right-overlay">
+                                <button type="button" onclick="" class="swap-locations" title="Swap locations A-B"><?php echo __('Swap locations A-B') ?></button>
+                            </div>
+                            <div data-bind="attr: { id: 'directions-panel-' + $index() }"></div>
+                        </div>
+
+                        <div class="box-input col-xs-12">
+                            <button class="get-direction action primary pull-right"  title="Get Directions" type="submit">
+                                <span><?php echo __('Go') ?></span>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+<?php endif ?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "storeLocatorList": {
+                        "component": "Simmons_StoreLocator/js/view/store-locator-list"
+                    }
+                }
+            }
+        }
+    }
+</script>
