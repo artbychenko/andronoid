@@ -17,7 +17,6 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 try {
     require __DIR__ . '/app/bootstrap.php';
 } catch (\Exception $e) {
@@ -33,7 +32,19 @@ HTML;
     exit(1);
 }
 
-$bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
+$params = $_SERVER;
+$params[\Magento\Store\Model\StoreManager::PARAM_RUN_TYPE] = 'store';
+
+switch ($params['HTTP_HOST']) {
+    case 'magento2.loc':
+        $params[\Magento\Store\Model\StoreManager::PARAM_RUN_CODE] = 'default';
+        break;
+    case 'andronoid.loc':
+        $params[\Magento\Store\Model\StoreManager::PARAM_RUN_CODE] = 'andronoid_store';
+}
+
+$bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $params);
+
 /** @var \Magento\Framework\App\Http $app */
 $app = $bootstrap->createApplication(\Magento\Framework\App\Http::class);
 $bootstrap->run($app);

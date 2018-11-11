@@ -139,7 +139,7 @@
     RewriteEngine on
 
     #RewriteRule .* - [E=MAGE_RUN_CODE:default]
-    RewriteRule .* - [E=MAGE_RUN_CODE:andronoid_store]
+    #RewriteRule .* - [E=MAGE_RUN_CODE:andronoid_store]
 ############################################
 ## you can put here your magento root folder
 ## path relative to web root
