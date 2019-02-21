@@ -15,6 +15,9 @@ use Magento\Cms\Model\BlockFactory;
 use Magento\Cms\Api\PageRepositoryInterface;
 use Magento\Cms\Api\Data\PageInterface;
 
+use Magento\Catalog\Model\Product;
+use Magento\Eav\Setup\EavSetupFactory;
+
 /**
  * Andronoid\Base\Setup\UpgradeData
  *
@@ -73,6 +76,12 @@ class UpgradeData implements UpgradeDataInterface
     protected $blockFactory;
 
     /**
+     * @var EavSetupFactory
+     */
+    protected $eavSetupFactory;
+
+
+    /**
      * UpgradeData constructor.
      * @param StoreManagerInterface $storeManager
      * @param PageInterfaceFactory $pageFactory
@@ -80,6 +89,7 @@ class UpgradeData implements UpgradeDataInterface
      * @param PageRepositoryInterface $pageRepositoryInterface
      * @param PageInterface $pageInterface
      * @param BlockFactory $blockFactory
+     * @param EavSetupFactory $eavSetupFactory
      */
 
     public function __construct(
@@ -88,7 +98,8 @@ class UpgradeData implements UpgradeDataInterface
         Config $config,
         PageRepositoryInterface $pageRepositoryInterface,
         PageInterface $pageInterface,
-        BlockFactory $blockFactory
+        BlockFactory $blockFactory,
+        EavSetupFactory $eavSetupFactory
     )
     {
         $this->storeManager = $storeManager;
@@ -97,6 +108,7 @@ class UpgradeData implements UpgradeDataInterface
         $this->pageRepositoryInterface = $pageRepositoryInterface;
         $this->pageInterface = $pageInterface;
         $this->blockFactory = $blockFactory;
+        $this->eavSetupFactory = $eavSetupFactory;
     }
 
     /**
@@ -194,6 +206,59 @@ HTML;
 
         $cmsPage->setContent($cmsPageContent);
         $cmsPage->getResource()->save($cmsPage);
+
+        $this->installer->endSetup();
+    }
+
+    /**
+     *
+     * adds/removes attribute 'manufacturer' to Images group
+     */
+    protected function addAttribute()
+    {
+
+        $this->installer->startSetup();
+
+        /* @var \Magento\Eav\Setup\EavSetup $eavSetup */
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->installer]);
+
+        $attributeSetId = $eavSetup->getDefaultAttributeSetId(Product::ENTITY);
+
+        $attributeId = $eavSetup->getAttributeId(Product::ENTITY, 'manufacturer');
+
+        $groupId = (int)$eavSetup->getAttributeGroupByCode(
+            Product::ENTITY,
+            $attributeSetId,
+            'image-management',
+            'attribute_group_id'
+        );
+
+        if (empty($attributeId) && isset($attributeSetId) && isset($groupId)) {
+            $eavSetup->addAttribute(
+                Product::ENTITY,
+                'manufacturer',
+                [
+                    'type' => 'varchar',
+                    'label' => 'Manufacturer',
+                    'input' => 'media_image',
+                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
+                    'frontend' => \Magento\Catalog\Model\Product\Attribute\Frontend\Image::class,
+                    'required' => false,
+                    'used_in_product_listing' => true,
+                ]);
+
+            $eavSetup->addAttributeToGroup(
+                Product::ENTITY,
+                $attributeSetId,
+                $groupId,
+                'manufacturer',
+                5
+            );
+        }
+
+        /*$eavSetup->removeAttribute(
+            Product::ENTITY,
+            'manufacturer');*/
 
         $this->installer->endSetup();
     }
